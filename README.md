@@ -1,1 +1,61 @@
-# ranvir
+Ful Stack
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stundent Registration Form</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 80px;
+      background-color: #f7fdf5;
+    }
+
+    h1 {
+      font-size: 28px;
+      text-align: center;
+      border-color: black;
+      color: rgb(red, green, blue);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 8px;
+      width: 250px;
+      margin-top: 5px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  </style>
+  <body>
+
+    <h1>Student Registration Form</h1>
+  
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+  
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+  
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" placeholder="Enter" min="1" max="120" required>
+  
+      <br>
+      <button type="submit">Register</button>
+    </form>
+  
+  </body>
+</html> 
