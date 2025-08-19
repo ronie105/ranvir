@@ -1,0 +1,56 @@
+CREATE TABLE Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    dob DATE
+);
+
+CREATE TABLE Courses (
+    course_id INT PRIMARY KEY,
+    title VARCHAR(100)
+);
+
+CREATE TABLE Enrollments (
+    enroll_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    grade VARCHAR(2),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+INSERT INTO Students (student_id, name, dob) VALUES
+(1, 'Alice Johnson', '2002-04-12'),
+(2, 'Bob Smith', '2001-09-23'),
+(3, 'Charlie Brown', '2003-01-15');
+
+INSERT INTO Courses (course_id, title) VALUES
+(101, 'Database Systems'),
+(102, 'Operating Systems'),
+(103, 'Computer Networks');
+
+INSERT INTO Enrollments (enroll_id, student_id, course_id, grade) VALUES
+(1, 1, 101, 'A'),
+(2, 2, 102, 'B'),
+(3, 3, 103, 'A');
+
+START TRANSACTION;
+
+INSERT INTO Enrollments (enroll_id, student_id, course_id, grade) 
+VALUES (4, 1, 102, 'B');
+
+SAVEPOINT before_second_insert;
+
+INSERT INTO Enrollments (enroll_id, student_id, course_id, grade) 
+VALUES (4, 1, 103, 'C');
+
+ROLLBACK TO SAVEPOINT before_second_insert;
+
+COMMIT;
+
+SELECT 
+    S.name AS student_name,
+    C.title AS course_title,
+    E.grade
+FROM Enrollments E
+INNER JOIN Students S ON E.student_id = S.student_id
+INNER JOIN Courses C ON E.course_id = C.course_id;
