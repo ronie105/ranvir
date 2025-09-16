@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SVG Drawing Canvas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 { margin: 16px 0; }
+  svg {
+    background: #fff;
+    border: 2px solid #555;
+    cursor: crosshair;
+    touch-action: none; /* allows dragging on touch devices */
+  }
+</style>
+</head>
+<body>
+  <h1>SVG Drawing Canvas (Drag to Draw Rectangles)</h1>
+
+  <!-- SVG canvas -->
+  <svg id="drawingArea" width="800" height="500"></svg>
+
+  <script>
+    const svg = document.getElementById('drawingArea');
+
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let currentRect = null;
+
+    // Convert mouse coordinates to SVG coordinates
+    function getMousePosition(evt) {
+      const rect = svg.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    svg.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      const pos = getMousePosition(e);
+      startX = pos.x;
+      startY = pos.y;
+
+      // create a new rectangle
+      currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      currentRect.setAttribute("x", startX);
+      currentRect.setAttribute("y", startY);
+      currentRect.setAttribute("width", 0);
+      currentRect.setAttribute("height", 0);
+      currentRect.setAttribute("fill", "rgba(0, 150, 255, 0.3)");
+      currentRect.setAttribute("stroke", "blue");
+      currentRect.setAttribute("stroke-width", "2");
+      svg.appendChild(currentRect);
+    });
+
+    svg.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      const pos = getMousePosition(e);
+
+      const width = pos.x - startX;
+      const height = pos.y - startY;
+
+      // Handle dragging in any direction (allow negative width/height)
+      currentRect.setAttribute("x", Math.min(pos.x, startX));
+      currentRect.setAttribute("y", Math.min(pos.y, startY));
+      currentRect.setAttribute("width", Math.abs(width));
+      currentRect.setAttribute("height", Math.abs(height));
+    });
+
+    svg.addEventListener('mouseup', () => {
+      isDrawing = false;
+      currentRect = null; // Finished drawing current rectangle
+    });
+
+    // Optional: stop drawing if mouse leaves the SVG area
+    svg.addEventListener('mouseleave', () => {
+      isDrawing = false;
+      currentRect = null;
+    });
+  </script>
+</body>
+</html>
