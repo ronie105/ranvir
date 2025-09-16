@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Filter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f7f7f7; }
+    h1   { margin-top: 0; }
+    select { padding: 6px; font-size: 16px; }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .product {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 180px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .product img {
+      max-width: 100%;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+    .name { font-weight: bold; }
+    .category { font-size: 0.9em; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Products</h1>
+  <label for="filter">Filter by category:</label>
+  <select id="filter">
+    <option value="all">All</option>
+    <option value="shoes">Shoes</option>
+    <option value="shirts">Shirts</option>
+    <option value="gadgets">Gadgets</option>
+  </select>
+
+  <div id="productList" class="products"></div>
+
+  <script>
+    // --- Product Data ---
+    const products = [
+      { name: "Running Shoes", category: "shoes", img: "https://via.placeholder.com/150?text=Shoes1" },
+      { name: "Leather Boots", category: "shoes", img: "https://via.placeholder.com/150?text=Shoes2" },
+      { name: "Casual Shirt",  category: "shirts", img: "https://via.placeholder.com/150?text=Shirt1" },
+      { name: "Formal Shirt",  category: "shirts", img: "https://via.placeholder.com/150?text=Shirt2" },
+      { name: "Smartphone",    category: "gadgets", img: "https://via.placeholder.com/150?text=Phone" },
+      { name: "Wireless Earbuds", category: "gadgets", img: "https://via.placeholder.com/150?text=Earbuds" }
+    ];
+
+    const productList = document.getElementById('productList');
+    const filter = document.getElementById('filter');
+
+    // --- Render Function ---
+    function renderProducts(category) {
+      productList.innerHTML = ''; // clear current list
+      const filtered = category === 'all'
+        ? products
+        : products.filter(p => p.category === category);
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div class="name">${p.name}</div>
+          <div class="category">${p.category}</div>
+        `;
+        productList.appendChild(card);
+      });
+    }
+
+    // --- Event Listener for Dropdown ---
+    filter.addEventListener('change', () => {
+      renderProducts(filter.value);
+    });
+
+    // Initial render
+    renderProducts('all');
+  </script>
+</body>
+</html>
