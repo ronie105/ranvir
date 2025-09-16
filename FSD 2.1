@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Character Counter - Debug</title>
+</head>
+<body>
+  <label for="text">Type here:</label><br>
+  <textarea id="text" rows="6" cols="50" placeholder="Start typing..."></textarea>
+  <div>Characters: <span id="count">0</span></div>
+
+  <script>
+    console.log('script loaded'); // should appear in DevTools Console
+
+    const textarea = document.getElementById('text');
+    const countEl = document.getElementById('count');
+
+    if (!textarea || !countEl) {
+      console.error('Element not found:', { textarea, countEl });
+    } else {
+      textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        countEl.textContent = len;
+        console.log('input event, length =', len);
+      });
+    }
+  </script>
+</body>
+</html>
